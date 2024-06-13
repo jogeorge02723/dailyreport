@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Learning Moments</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form id="inputForm">
+        <label for="period">Period:</label>
+        <input type="number" id="period" name="period" required>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+        <label for="work_done">Work done:</label>
+        <input type="text" id="work_done" name="work_done" required>
+        <label for="homework">Homework:</label>
+        <input type="text" id="homework" name="homework">
+        <button type="submit">Add to Table</button>
+    </form>
+    
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th colspan="4" style="text-align: center;">
+                    <h3>VELAMMAL VIDHYASHRAM PADUR</h3>
+                    <h3>DAILY LEARNING MOMENTS</h3>
+                </th>
+            </tr>
+
+            <tr>
+                <th colspan="4" style="text-align: left;">
+                    <p><b>Class:</b> XII B</p>
+                    <p><b>Class Teacher:</b> Mary Arun Kumar</p>
+                    <label for="date"><b>Date:</b></label>
+                    <input type="date" id="date" name="date" value="2024-06-12">
+                </th>
+            </tr>
+
+            <tr>
+                <th>Period</th>
+                <th>Subject</th>
+                <th>Work done</th>
+                <th>Homework</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added here -->
+        </tbody>
+    </table>
+    
+    <script>
+        document.getElementById('inputForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const period = document.getElementById('period').value;
+            const subject = document.getElementById('subject').value;
+            const workDone = document.getElementById('work_done').value;
+            const homework = document.getElementById('homework').value;
+            
+            // Create a new row and cells
+            const table = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            const periodCell = newRow.insertCell(0);
+            const subjectCell = newRow.insertCell(1);
+            const workDoneCell = newRow.insertCell(2);
+            const homeworkCell = newRow.insertCell(3);
+            
+            // Insert values into the cells
+            periodCell.textContent = period;
+            subjectCell.textContent = subject;
+            workDoneCell.textContent = workDone;
+            homeworkCell.textContent = homework;
+            
+            // Clear the form fields
+            document.getElementById('inputForm').reset();
+        });
+    </script>
+</body>
+</html>
