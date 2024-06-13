@@ -8,40 +8,33 @@
         body {
             display: flex;
             flex-direction: column;
-            align-items: left;
-            font-family: Arial, sans-serif;
+            align-items: flex-start;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
         }
-
         table {
             width: 50%;
             border-collapse: collapse;
             margin: 10px 0;
         }
-
-        form {
-            margin-bottom: 20px;
-            width: 60%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-
-        }
         th, td {
             border: 1px solid black;
             padding: 8px;
             text-align: left;
-            font-size: 8px;
+            font-size: 12px;
         }
         th {
             background-color: #f2f2f2;
         }
         form {
             margin-bottom: 20px;
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
-
         input, button {
             padding: 5px;
-            font-size: 8px;
+            font-size: 10px;
         }
     </style>
 </head>
@@ -56,6 +49,7 @@
         <label for="homework">Homework:</label>
         <input type="text" id="homework" name="homework">
         <button type="submit">Add to Table</button>
+        <input type="date" id="date" name="date" value="12-03-2024">
     </form>
     
     <table id="dataTable">
@@ -69,10 +63,10 @@
 
             <tr>
                 <th colspan="4" style="text-align: left;">
-                    <p><b>Class:</b> XII B</p>
-                    <p><b>Class Teacher:</b> Mary Arun Kumar</p>
-                    <label for="date"><b>Date:</b></label>
-                    <input type="date" id="date" name="date" value="2024-06-12">
+                    <h3>Class: XII B </h3>
+                    <h3>Class Teacher: Mary Arun Kumar</h3>
+                    <h3>Date: <span id="selectedDateDisplay">12-03-2024</span></h3>
+
                 </th>
             </tr>
 
@@ -87,7 +81,13 @@
             <!-- Rows will be added here -->
         </tbody>
     </table>
-    
+
+    <button id="capturePageButton">Capture Screenshot</button>
+    <a id="downloadLink" style="display: none;">Download Screenshot</a>
+
+    <!-- Include html2canvas library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <script>
         document.getElementById('inputForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -115,6 +115,31 @@
             // Clear the form fields
             document.getElementById('inputForm').reset();
         });
+    
+        // Capture page screenshot
+        document.getElementById('capturePageButton').addEventListener('click', function() {
+            html2canvas(document.body, { scale: 2 }).then(canvas => {
+                // Convert the canvas to a data URL in PNG format
+                const dataURL = canvas.toDataURL('image/png');
+                
+                // Create a downloadable link
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = dataURL;
+                downloadLink.download = 'screenshot.png';
+                downloadLink.style.display = 'block';
+                downloadLink.textContent = 'Download Screenshot';
+            });
+        });
+    
+// Update selected date display
+document.getElementById('date').addEventListener('change', function() {
+    const selectedDate = this.value; // Get the selected date from the input
+    const [year, month, day] = selectedDate.split('-'); // Split the date into year, month, and day
+    const formattedDate = `${day}/${month}/${year}`; // Format as dd/mm/yyyy
+    document.getElementById('selectedDateDisplay').textContent = formattedDate; // Update the display
+});
+
     </script>
+    
 </body>
 </html>
