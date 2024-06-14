@@ -6,9 +6,6 @@
     <title>Daily Learning Moments</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
             font-family: 'Times New Roman', Times, serif, sans-serif;
         }
         table {
@@ -49,7 +46,7 @@
         <label for="homework">Homework:</label>
         <input type="text" id="homework" name="homework">
         <button type="submit">Add to Table</button>
-        <input type="date" id="date" name="date" value="12-03-2024">
+        <input type="date" id="date" name="date" value="2024-03-12">
     </form>
     
     <table id="dataTable">
@@ -118,7 +115,8 @@
     
         // Capture page screenshot
         document.getElementById('capturePageButton').addEventListener('click', function() {
-            html2canvas(document.body, { scale: 2 }).then(canvas => {
+            const table = document.getElementById('dataTable'); // Select the table element
+            html2canvas(table, { scale: 2 }).then(canvas => {
                 // Convert the canvas to a data URL in PNG format
                 const dataURL = canvas.toDataURL('image/png');
                 
@@ -131,14 +129,13 @@
             });
         });
     
-// Update selected date display
-document.getElementById('date').addEventListener('change', function() {
-    const selectedDate = this.value; // Get the selected date from the input
-    const [year, month, day] = selectedDate.split('-'); // Split the date into year, month, and day
-    const formattedDate = `${day}/${month}/${year}`; // Format as dd/mm/yyyy
-    document.getElementById('selectedDateDisplay').textContent = formattedDate; // Update the display
-});
-
+        // Update selected date display
+        document.getElementById('date').addEventListener('change', function() {
+            const selectedDate = this.value; // Get the selected date from the input
+            const [year, month, day] = selectedDate.split('-'); // Split the date into year, month, and day
+            const formattedDate = `${day}/${month}/${year}`; // Format as dd/mm/yyyy
+            document.getElementById('selectedDateDisplay').textContent = formattedDate; // Update the display
+        });
     </script>
     
 </body>
