@@ -51,7 +51,7 @@
         <br>
         <button type="submit">Add to Table</button>
         <br>
-        <input type="date" id="date" name="date" value="2024-03-12">
+        <input type="date" id="date" name="date">
     </form>
     
     <table id="dataTable">
@@ -67,8 +67,7 @@
                 <th colspan="4" style="text-align: left;">
                     <h3>Class: XII B </h3>
                     <h3>Class Teacher: Mary Arun Kumar</h3>
-                    <h3>Date: <span id="selectedDateDisplay">12-03-2024</span></h3>
-
+                    <h3>Date: <span id="selectedDateDisplay"></span></h3>
                 </th>
             </tr>
 
@@ -91,15 +90,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+        // Set today's date by default
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            document.getElementById('selectedDateDisplay').textContent = formatDate(today);
+        }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        // Enable editing of table cells
+        function makeTableEditable() {
+            const cells = document.querySelectorAll('#dataTable tbody td');
+            cells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const input = document.createElement('input');
+                    input.value = this.textContent;
+                    this.textContent = '';
+                    this.appendChild(input);
+
+                    input.addEventListener('blur', () => {
+                        this.textContent = input.value;
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            input.blur();
+                        }
+                    });
+
+                    input.focus();
+                });
+            });
+        }
+
         document.getElementById('inputForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Get form values
             const period = document.getElementById('period').value;
             const subject = document.getElementById('subject').value;
             const workDone = document.getElementById('work_done').value;
             const homework = document.getElementById('homework').value;
-            
+
             // Create a new row and cells
             const table = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
@@ -107,17 +143,20 @@
             const subjectCell = newRow.insertCell(1);
             const workDoneCell = newRow.insertCell(2);
             const homeworkCell = newRow.insertCell(3);
-            
+
             // Insert values into the cells
             periodCell.textContent = period;
             subjectCell.textContent = subject;
             workDoneCell.textContent = workDone;
             homeworkCell.textContent = homework;
-            
+
+            // Make the new row cells editable
+            makeTableEditable();
+
             // Clear the form fields
             document.getElementById('inputForm').reset();
         });
-    
+
         // Capture page screenshot
         document.getElementById('capturePageButton').addEventListener('click', function() {
             const table = document.getElementById('dataTable'); // Select the table element
@@ -133,15 +172,18 @@
                 downloadLink.textContent = 'Download Screenshot';
             });
         });
-    
+
         // Update selected date display
         document.getElementById('date').addEventListener('change', function() {
             const selectedDate = this.value; // Get the selected date from the input
-            const [year, month, day] = selectedDate.split('-'); // Split the date into year, month, and day
-            const formattedDate = `${day}/${month}/${year}`; // Format as dd/mm/yyyy
-            document.getElementById('selectedDateDisplay').textContent = formattedDate; // Update the display
+            document.getElementById('selectedDateDisplay').textContent = formatDate(selectedDate); // Update the display
         });
+
+        // Initialize with today's date and make table editable
+        window.onload = function() {
+            setTodayDate();
+            makeTableEditable();
+        };
     </script>
-    
 </body>
 </html>
